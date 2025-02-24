@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env  
+    volumes:
+      - ./backend:/app      # Mount local backend code
+      - /app/node_modules   # Prevent overwriting node_modules
+    command: npm run dev    # Use nodemon for live reload  
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app     # Mount local frontend code
+      - /app/node_modules   # Prevent overwriting node_modules
+    command: npm run dev    # Next.js dev server with hot reload  
+    depends_on:
+      - backend
